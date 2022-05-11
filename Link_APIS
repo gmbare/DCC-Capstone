@@ -1,2 +1,11 @@
-https://developer.calendly.com/getting-started 
-https://developers.google.com/maps/documentation/javascript/overview?hl=en_US 
+https://developer.calendly.com/getting-started - Calendar? probably will use Google Calendar
+https://developers.google.com/calendar/api/concepts/events-calendars#calendar_and_calendar_list - Better Calendar (for our purposes)
+
+https://developers.google.com/maps/documentation/javascript/overview?hl=en_US - MAP
+
+http://www.geonames.org/export/web-services.html - Lat-Long from zip
+
+http://api.geonames.org/findNearbyPostalCodes?lat=41.130951&lng=-95.907654&username=bareg - lat lon to find zip (geolocator)
+http://api.geonames.org/postalCodeSearch?postalcode=68123&maxRows=10&country=US&username=bareg - zip to find lat lon
+
+
