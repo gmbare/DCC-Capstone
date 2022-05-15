@@ -84,11 +84,15 @@ router.get("/findParlour/:zip_code", async (req,res) => {
     try{
         let studios = []
         console.time("2 zip codes")
+        let cStudio = await Studio.find({zip_code: req.params.zip_code})
+        if (cStudio.length > 0) studios.push(cStudio)
         for (let i = parseInt(req.params.zip_code) -2; i <= parseInt(req.params.zip_code) + 2;i++){
+          if (i != parseInt(req.params.zip_code)){
             let studio = await Studio.find({zip_code: i})
             if (studio.length > 0){
                 studios.push(studio)
             }
+          }
         }
         
         // console.log(studios)

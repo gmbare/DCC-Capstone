@@ -3,7 +3,7 @@ const Joi = require("joi");
 
 const artistSchema = new mongoose.Schema({
     name:{type:String},
-    //schedule:{type:Calendly},
+    //schedule:{type:googleCalendar},
 })    
 const Artist = mongoose.model("Artist", artistSchema);
 

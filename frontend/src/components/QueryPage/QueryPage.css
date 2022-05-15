@@ -1,0 +1,19 @@
+.hidden_query{
+    display:none;
+
+}
+.shown_query{
+    visibility: visible;
+    position: relative;
+    background-color: aliceblue;
+    width: 100%;
+    border: .5rem;
+    border-style: groove;
+}
+
+.upper_parlour_button{
+    border: none;
+    background-color: inherit;
+    height: 3rem;
+    width: 100%;
+}

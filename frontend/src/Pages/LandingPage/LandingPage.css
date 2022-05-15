@@ -37,6 +37,7 @@ margin-top: 20rem;
 
 
 .login_register_div{
-    position:relative;
-    top: 35rem;
+    position:fixed;
+    bottom:1rem;
+    display: inline-block;
 }
