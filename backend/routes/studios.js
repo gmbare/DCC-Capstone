@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const express = require('express');
 const { validateArtist, Artist } = require("../models/artist");
 const { google } = require("googleapis");
+const { Schedule } = require("../models/schedule");
 const router = express.Router()
 
 async function main() {
@@ -45,15 +46,30 @@ async function removeCalendar(calendar_id){
 
 
 async function addEvent(calendar_id, summary='basic summary', description='basic description'){
-  await calendar.events.insert({
+  let res = await calendar.events.insert({
     calendarId:calendar_id,
+    requestBody:{
     summary:summary,
-    description:description
-  })
+    description:description,     
+    start: {
+      'date': '2022-05-20'
+    },
+    end: {
+      'date': '2022-05-20'
+    }
+  }
+})
+  console.log("Successfully added event to calendar")
+  return (res.data)
 }
 
 async function listEvents(calendar_id){
-  return await calendar.events.list({calendarId:calendar_id})
+  const res =  await calendar.events.list({calendarId:calendar_id})
+  return res.data
+}
+
+async function removeEvents(calendar_id,event_id){
+  const res = await calendar.events.delete({calendarId:calendar_id, eventId:event_id})
 }
 
 async function addCalendar(summ = "My_Summary", description = "my_description") {
@@ -133,14 +149,26 @@ router.put("/registernewartist/:studioId", async(req, res) => {
         let calendar = await addCalendar(`${req.params.studioId}&${req.body.name}`, `Calendar for ${req.body.name} of ${studio.name}`)
         let artist = new Artist({
             name: req.body.name,
-            calendar: calendar
+            calendar: calendar, 
         })
         studio.artists.push(artist)
         await studio.save()
-        return res.send(`Artist: ${req.body.name} succesfully added to roster of ${studio.name}`)
+        return res.send(`Artist: ${req.body.name} succesfully added to roster of ${studio.name} with id of ${artist.id}`)
     }catch (err) {
         return res.status(500).send(`Internal Server Error: ${err}`);
     }
+})
+
+
+router.delete ("/removestudio/:studioId", async(req, res) => {
+try{
+  let studio = await Studio.findByIdAndDelete(req.params.studioId)
+  // await studio.save()
+  return res.send("Successfully removed")
+}catch (er) {
+  console.log(er)
+}
+
 })
 
 router.delete("/removeartist/:studioId/:artist_id", async (req, res) => {
@@ -160,17 +188,73 @@ router.delete("/removeartist/:studioId/:artist_id", async (req, res) => {
     }
 })
 
-router.get("/:studioId/:artistId/calendarevent", async (req, res) => {
+
+//Check if brent knows why this isn't saving properly
+router.put("/:studioId/:artistId/addcalendarevent", async (req, res) => {
   try{
     let studio = await Studio.findById(req.params.studioId)
-    let artist = await Studio.artists.findById(req.params.artistId)
+    let artist = studio.artists.id(req.params.artistId)
 
-    console.log(artist)
-    return res.send(artist)
+    let newEvent = await addEvent(artist.calendar.id, "Tattoo Appointment for Test2", "Name: Test2\nEmail:Test2@gmail.com\nNumber:40202020202")
+    let event = new Schedule({
+      items: {event_id:newEvent.id,
+      summary:newEvent.summary,
+    description:newEvent.description,start:newEvent.start,end:newEvent.end}
+    })
+  //   let event = {}
+  //   event[newEvent.id] = {event_id:newEvent.id,
+  //   summary:newEvent.summary,
+  // description:newEvent.description,
+  // start:newEvent.start,
+  // end:newEvent.end}
+
+    artist.schedule.push(event)
+    // artist.save()
+    await studio.save()
+    // console.log(await listEvents(artist.calendar.id))
+    return res.send(studio)
 
   }catch(er){
     console.log(er)
   }
+})
+
+
+router.get("/:studioId/:artistId/getcalendarevent", async (req, res) => {
+  try{
+  let studio = await Studio.findById(req.params.studioId)
+  let artist = studio.artists.id(req.params.artistId)
+
+  // let get = await listEvents(artist.calender.id, req.body.event_id)
+  // console.log(artist.schedule.id[req.body.event_id])
+  console.log(artist.schedule)
+  let test = artist.schedule[req.body.event_id]
+  // console.log(test)
+
+return res.send(test)
+
+}catch(er){
+  console.log(er)
+}
+
+})
+
+
+router.delete("/:studioId/:artistId/delcalendarevent", async (req, res) => {
+try{
+  let studio = await Studio.findById(req.params.studioId)
+  let artist = studio.artists.id(req.params.artistId)
+
+  let remEvent = await delEvent(artist.calender.id, req.body.event_id)
+  artist.schedule.splice(artist.schedule.indexOf(artist.schedule))
+
+
+
+
+}catch(er){
+  console.log(er)
+}
+
 })
 
 
