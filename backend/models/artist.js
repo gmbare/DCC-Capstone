@@ -3,13 +3,14 @@ const Joi = require("joi");
 
 const artistSchema = new mongoose.Schema({
     name:{type:String},
-    //schedule:{type:googleCalendar},
+    calendar:{type:Object},
 })    
 const Artist = mongoose.model("Artist", artistSchema);
 
 function validateArtist(artist){
 const schema = Joi.object({
     name:Joi.string().required(),
+    calendar:Joi.object()
 })
 return schema.validate(artist);
 }
