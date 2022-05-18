@@ -14,7 +14,7 @@ function validateArtist(artist){
 const schema = Joi.object({
     name:Joi.string().required(),
     calendar:Joi.object(),
-    schedule:Joi.array(),
+    schedule:Joi.object(),
     events:Joi.array()
 })
 return schema.validate(artist);

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link,useLocation } from 'react-router-dom';
 import {FaGithubAlt} from "react-icons/fa"
-import "./Calendar.css"
+import "./Studio.css"
 
 // var options = {month: 'long'}
-const Calendar = (props) => {
+const Studio = (props) => {
     const location = useLocation()
     const { parlour,
         searchZip} = location.state
@@ -57,8 +57,17 @@ const Calendar = (props) => {
                                 if (i == 1 && j >= testDate.getDay()) {
                                     dayCount++
                                         return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p>{parlour.artists.map((artist) => {
-                                            console.log(artist.schedule)
                                             if (artist.schedule[`week${i}`].includes(filldate.getDay())){
+                                                if(artist.events.includes({date:filldate.toString().replace(' ','-')})){
+                                                    return                                                    
+                                                }
+                                                // if (artist.events.length > 0) {
+                                                //     let test = new Date(artist.events[0].date)
+                                                //     console.log(filldate)
+                                                //     console.log(test)
+                                                //     let obj = artist.events.find(o => o.date === filldate)
+                                                //     console.log(obj)                           
+                                                // }
                                             return (<button className='schedule_button'>{`Schedule w/ ${artist.name}`}</button>)
                                             }
                                         })}</td>)
@@ -67,8 +76,15 @@ const Calendar = (props) => {
                                 } else if (i > 1 && dayCount < currentMonth.days) {
                                     dayCount++
                                     return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p>{parlour.artists.map((artist) => {
-                                        console.log(artist.schedule)
                                         if (artist.schedule[`week${i}`].includes(filldate.getDay())){
+                                            if (artist.events.length > 0) {
+                                                let test = new Date(artist.events[0].date)
+                                                console.log(test)
+                                                if (test == filldate){
+                                                    console.log("UM")
+                                                    return      
+                                                }            
+                                            }
                                         return (<button className='schedule_button'>{`Schedule w/ ${artist.name}`}</button>)
                                         }
                                     })}</td>)
@@ -82,4 +98,4 @@ const Calendar = (props) => {
     </div>)
 }
 
-export default Calendar;
+export default Studio;

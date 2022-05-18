@@ -45,17 +45,17 @@ async function removeCalendar(calendar_id){
 }
 
 
-async function addEvent(calendar_id, summary='basic summary', description='basic description'){
+async function addEvent(calendar_id, summary='basic summary', description='basic description', date='2022-04-20'){
   let res = await calendar.events.insert({
     calendarId:calendar_id,
     requestBody:{
     summary:summary,
     description:description,     
     start: {
-      'date': '2022-05-20'
+      'date': date
     },
     end: {
-      'date': '2022-05-20'
+      'date': date
     }
   }
 })
@@ -207,30 +207,37 @@ router.delete("/removeartist/:studioId/:artist_id", async (req, res) => {
 })
 
 
+router.get("/getstudio/:studioId", async (req, res) => {
+  try{
+    let studio = await Studio.findById(req.params.studioId)  
+  return res.send(studio)
+  
+  }catch(er){
+    console.log(er)
+  }
+  
+  })
+
+
 //Check if brent knows why this isn't saving properly
 router.put("/:studioId/:artistId/addcalendarevent", async (req, res) => {
   try{
     let studio = await Studio.findById(req.params.studioId)
     let artist = studio.artists.id(req.params.artistId)
 
-    let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description)
+    let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description, req.body.date)
+    let eventDate = new Date(newEvent.start.date)
     let event = new Schedule({
       items: {event_id:newEvent.id,
       summary:newEvent.summary,
       public:true,
-    description:newEvent.description,start:newEvent.start,end:newEvent.end}
+    description:newEvent.description,start:newEvent.start,end:newEvent.end},
+    date:eventDate.toDateString()
     })
-  //   let event = {}
-  //   event[newEvent.id] = {event_id:newEvent.id,
-  //   summary:newEvent.summary,
-  // description:newEvent.description,
-  // start:newEvent.start,
-  // end:newEvent.end}
+    console.log(event)
 
-    artist.schedule.push(event)
-    // artist.save()
+    artist.events.push(event)
     await studio.save()
-    // console.log(await listEvents(artist.calendar.id))
     return res.send(studio)
 
   }catch(er){
@@ -243,9 +250,6 @@ router.get("/:studioId/:artistId/getcalendarevent", async (req, res) => {
   try{
   let studio = await Studio.findById(req.params.studioId)
   let artist = studio.artists.id(req.params.artistId)
-
-  // let get = await listEvents(artist.calender.id, req.body.event_id)
-  // console.log(artist.schedule.id[req.body.event_id])
   console.log(artist.schedule)
   let test = artist.schedule[req.body.event_id]
   // console.log(test)

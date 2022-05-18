@@ -3,7 +3,7 @@ const Joi = require("joi");
 
 const scheduleSchema = new mongoose.Schema({
     items: {type:Object},
-    taken: {type:Boolean, default:false},
+    date: {type:Date},
     customer: {type:String}
 })    
 const Schedule = mongoose.model("Schedule", scheduleSchema);
@@ -11,7 +11,7 @@ const Schedule = mongoose.model("Schedule", scheduleSchema);
 function validateSchedule(artist){
 const schema = Joi.object({
     items: Joi.object(),
-    taken: Joi.boolean(),
+    date: Joi.date(),
     customer: Joi.string()
 })
 return schema.validate(artist);

@@ -2,7 +2,8 @@
 import './App.css';
 import { Routes, Route } from "react-router-dom";
 import LandingPage from './Pages/LandingPage/LandingPage';
-import Calendar from './components/Calendar/Calendar';
+// import Calendar from './components/Calendar/Calendar';
+import Studio from './components/Studio/Studio';
 import QueryPageBottom from './components/QueryPageBottom/QueryPageBottom';
 import QueryPage from './components/QueryPage/QueryPage';
 // import PrivateRoute from "./utils/PrivateRoute";
@@ -13,10 +14,10 @@ function App() {
     <div className="App">
     <Routes>
       <Route
-        path="/Scheduling"
+        path="/studio/:studio_id"
         element={
           // <PrivateRoute>
-            <Calendar/>
+            <Studio/>
           // </PrivateRoute>
         }
       />
