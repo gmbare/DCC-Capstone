@@ -83,6 +83,23 @@ async function addCalendar(summ = "My_Summary", description = "my_description") 
   return (res.data)
 }
 
+async function checkCalendarACL(calendar_id){
+  const res = await calendar.acl.list({
+    calendarId:calendar_id
+  })
+  return (res.data)
+}
+
+async function openCalendarACL(calendar_id){
+  const res = await calendar.acl.insert({
+    calendarId:calendar_id,
+    requestBody:{}
+
+  })
+}
+
+
+
 
 
 router.post("/registernewstudio", async (req, res) => {
@@ -195,10 +212,11 @@ router.put("/:studioId/:artistId/addcalendarevent", async (req, res) => {
     let studio = await Studio.findById(req.params.studioId)
     let artist = studio.artists.id(req.params.artistId)
 
-    let newEvent = await addEvent(artist.calendar.id, "Tattoo Appointment for Test2", "Name: Test2\nEmail:Test2@gmail.com\nNumber:40202020202")
+    let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description)
     let event = new Schedule({
       items: {event_id:newEvent.id,
       summary:newEvent.summary,
+      public:true,
     description:newEvent.description,start:newEvent.start,end:newEvent.end}
     })
   //   let event = {}
@@ -244,9 +262,11 @@ router.delete("/:studioId/:artistId/delcalendarevent", async (req, res) => {
 try{
   let studio = await Studio.findById(req.params.studioId)
   let artist = studio.artists.id(req.params.artistId)
-
-  let remEvent = await delEvent(artist.calender.id, req.body.event_id)
-  artist.schedule.splice(artist.schedule.indexOf(artist.schedule))
+  let dum = await checkCalendarACL(artist.calendar.id)
+  console.log(dum)
+  return res.send(dum)
+  // let remEvent = await delEvent(artist.calender.id, req.body.event_id)
+  // artist.schedule.splice(artist.schedule.indexOf(artist.schedule))
 
 
 

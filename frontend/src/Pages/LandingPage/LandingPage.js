@@ -54,6 +54,7 @@ const LandingPage = () => {
             // console.log(result);
                 setZipSearch(result);
                 console.log(result.geonames.code[0].postalcode[0])
+                document.getElementById('zip_code_query').value = result.geonames.code[0].postalcode[0]
                 findParlour(result.geonames.code[0].postalcode[0],result)
         })
     })

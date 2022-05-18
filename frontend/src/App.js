@@ -1,12 +1,32 @@
 // import logo from './logo.svg';
 import './App.css';
+import { Routes, Route } from "react-router-dom";
 import LandingPage from './Pages/LandingPage/LandingPage';
+import Calendar from './components/Calendar/Calendar';
+// import PrivateRoute from "./utils/PrivateRoute";
 
 
 function App() {
   return (
     <div className="App">
-      <LandingPage/>
+    <Routes>
+      <Route
+        path="/Scheduling"
+        element={
+          // <PrivateRoute>
+            <Calendar/>
+          // </PrivateRoute>
+        }
+      />
+      <Route
+        path="/"
+        element={
+          // <PrivateRoute>
+            <LandingPage/>
+          // </PrivateRoute>
+        }
+      />
+    </Routes>
     </div>
   );
 }
