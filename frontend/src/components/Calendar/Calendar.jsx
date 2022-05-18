@@ -56,22 +56,22 @@ const Calendar = (props) => {
                                 let filldate = new Date(`${currentMonth.name} ${dayCount + 1} 2022`)
                                 if (i == 1 && j >= testDate.getDay()) {
                                     dayCount++
-                                    if (open_days.includes(filldate.getDay())) {
-                                        return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p><button className='schedule_button'>Schedule</button></td>)
-                                    }
-                                    else {
-                                        return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p></td>)
-                                    }
+                                        return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p>{parlour.artists.map((artist) => {
+                                            console.log(artist.schedule)
+                                            if (artist.schedule[`week${i}`].includes(filldate.getDay())){
+                                            return (<button className='schedule_button'>{`Schedule w/ ${artist.name}`}</button>)
+                                            }
+                                        })}</td>)
                                 } else if ((i == 1 && j < testDate.getDay()) || (i >= 1 && dayCount >= currentMonth.days)) {
                                     return (<td className='calendar-table calendar_day_cell'></td>);
                                 } else if (i > 1 && dayCount < currentMonth.days) {
                                     dayCount++
-                                    if (open_days.includes(filldate.getDay())) {
-                                        return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p><button className='schedule_button'>Schedule</button></td>)
-                                    }
-                                    else {
-                                        return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p></td>)
-                                    }
+                                    return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p>{parlour.artists.map((artist) => {
+                                        console.log(artist.schedule)
+                                        if (artist.schedule[`week${i}`].includes(filldate.getDay())){
+                                        return (<button className='schedule_button'>{`Schedule w/ ${artist.name}`}</button>)
+                                        }
+                                    })}</td>)
                                 }
                             }
                         })}</tr>)
