@@ -40,7 +40,7 @@ build/Release
 
 # Dependency directories
 ./backend/proud-reality-349916-29af4c527525.json
-./backend/proud-reality-349916-a46a399e46db.json
+./backend/keys/
 ./backend/node_modules/
 ./frontend/node_modules/
 node_modules/
