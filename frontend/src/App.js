@@ -3,6 +3,8 @@ import './App.css';
 import { Routes, Route } from "react-router-dom";
 import LandingPage from './Pages/LandingPage/LandingPage';
 import Calendar from './components/Calendar/Calendar';
+import QueryPageBottom from './components/QueryPageBottom/QueryPageBottom';
+import QueryPage from './components/QueryPage/QueryPage';
 // import PrivateRoute from "./utils/PrivateRoute";
 
 
@@ -25,6 +27,10 @@ function App() {
             <LandingPage/>
           // </PrivateRoute>
         }
+      />
+      <Route
+      path="query/:zip_code"
+      element={<QueryPage/>}
       />
     </Routes>
     </div>

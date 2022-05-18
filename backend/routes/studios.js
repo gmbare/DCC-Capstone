@@ -166,7 +166,8 @@ router.put("/registernewartist/:studioId", async(req, res) => {
         let calendar = await addCalendar(`${req.params.studioId}&${req.body.name}`, `Calendar for ${req.body.name} of ${studio.name}`)
         let artist = new Artist({
             name: req.body.name,
-            calendar: calendar, 
+            calendar: calendar,
+            schedule:{week1:[1,2,3,5], week2:[1,2,3,4,5],week3:[1,5],week4:[1,2,3,4,5],week5:[1,2,3,4,5],week6:[1,2,3,4,5]}
         })
         studio.artists.push(artist)
         await studio.save()
