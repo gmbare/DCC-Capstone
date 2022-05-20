@@ -1,0 +1,15 @@
+.hidden_review{
+    display:none;
+}
+
+
+.hidden_review{
+    visibility:visible;
+}
+
+.review-text-box{
+    width:50%;
+    height:10rem;
+    text-align: start;
+
+}

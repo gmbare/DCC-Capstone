@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+
+body{
+  background-color: aliceblue;
+  background-image: url("E:/Dcc-Capstone/DCC-Capstone/frontend/public/BareSkins.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-position-y: top;
+}

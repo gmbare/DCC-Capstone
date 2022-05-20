@@ -9,6 +9,7 @@
 .calendar-table{
     border: .1rem solid;
     border-collapse: collapse;
+    background-color: aliceblue;
 }
 
 .calendar_weekday_cell{

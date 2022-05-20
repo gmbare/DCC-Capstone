@@ -7,6 +7,7 @@ const express = require('express');
 const { validateArtist, Artist } = require("../models/artist");
 const { google } = require("googleapis");
 const { Schedule } = require("../models/schedule");
+const { AboutArtist } = require("../models/AboutArtist");
 const router = express.Router()
 
 async function main() {
@@ -56,7 +57,7 @@ async function addEvent(calendar_id, summary='basic summary', description='basic
     },
     end: {
       'date': date
-    }
+    }, timeZone:"America/Chicago"
   }
 })
   console.log("Successfully added event to calendar")
@@ -78,6 +79,7 @@ async function addCalendar(summ = "My_Summary", description = "my_description") 
     requestBody: {
       "summary": summ,
       "description": description,
+      "timeZone":"America/Chicago"
     },
   });
   return (res.data)
@@ -160,14 +162,17 @@ async (req, res) => {
 
 router.put("/registernewartist/:studioId", async(req, res) => {
     try{
-        const {error} = validateArtist(req.body);
-        if (error) return res.send(`${req.body}\n\n${error}`)
+        // const {error} = validateArtist(req.body);
+        // if (error) return res.send(`${req.body}\n\n${error}`)
         let studio = await Studio.findById(req.params.studioId)
         let calendar = await addCalendar(`${req.params.studioId}&${req.body.name}`, `Calendar for ${req.body.name} of ${studio.name}`)
+        let about = new AboutArtist({description:req.body.description,
+        reviews:req.body.reviews})
         let artist = new Artist({
             name: req.body.name,
             calendar: calendar,
-            schedule:{week1:[1,2,3,5], week2:[1,2,3,4,5],week3:[1,5],week4:[1,2,3,4,5],week5:[1,2,3,4,5],week6:[1,2,3,4,5]}
+            schedule:{week1:[1,2,3,5], week2:[1,2,3,4,5],week3:[1,5],week4:[1,2,3,4,5],week5:[1,2,3,4,5],week6:[1,2,3,4,5]},
+            about:about
         })
         studio.artists.push(artist)
         await studio.save()
@@ -226,13 +231,13 @@ router.put("/:studioId/:artistId/addcalendarevent", async (req, res) => {
     let artist = studio.artists.id(req.params.artistId)
 
     let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description, req.body.date)
-    let eventDate = new Date(newEvent.start.date)
+    let eventDate = newEvent.start.date
     let event = new Schedule({
       items: {event_id:newEvent.id,
       summary:newEvent.summary,
       public:true,
     description:newEvent.description,start:newEvent.start,end:newEvent.end},
-    date:eventDate.toDateString()
+    date:eventDate.replace('Z', 'GMT')
     })
     console.log(event)
 

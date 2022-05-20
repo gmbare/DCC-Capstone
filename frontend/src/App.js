@@ -4,6 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from './Pages/LandingPage/LandingPage';
 // import Calendar from './components/Calendar/Calendar';
 import Studio from './components/Studio/Studio';
+import ArtistPage from './components/ArtistPage/Artist';
+import Schedule from './components/Schedule/Schedule';
+import Navbar from './components/Navbar/Navbar';
 import QueryPageBottom from './components/QueryPageBottom/QueryPageBottom';
 import QueryPage from './components/QueryPage/QueryPage';
 // import PrivateRoute from "./utils/PrivateRoute";
@@ -12,6 +15,7 @@ import QueryPage from './components/QueryPage/QueryPage';
 function App() {
   return (
     <div className="App">
+      <Navbar/>
     <Routes>
       <Route
         path="/studio/:studio_id"
@@ -32,6 +36,14 @@ function App() {
       <Route
       path="query/:zip_code"
       element={<QueryPage/>}
+      />
+      <Route
+      path=":studioId/artist/:artistId"
+      element={<ArtistPage/>}
+      />
+      <Route
+      path=":studioId/artist/:artistId/schedule"
+      element={<Schedule/>}
       />
     </Routes>
     </div>
