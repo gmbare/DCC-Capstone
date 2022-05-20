@@ -85,7 +85,7 @@ const LandingPage = () => {
             <button className='btn-size-5r' onClick={e => handleLocation(e)}><MdLocationSearching className='font-size-5r'/></button> <input type='text' id='zip_code_query'placeholder={`Please input a Zip Code`} className='box-size-5r' onKeyDown={(e) => handleInput(e)}></input><button className='btn-size-5r' onClick={handleSubmission }><FaSearch className='font-size-5r'/></button>
             </div>
             <div className='login_register_div'>
-            <p>Insert Anchors that allow you to login, or take you to register page</p>
+            <Link  to="/login">Login or register</Link>
             </div>
         </div>
     );

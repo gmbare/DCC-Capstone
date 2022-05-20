@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
+// const {friendSchema} = require("./friends")
 
 const userSchema = mongoose.Schema({
   name: { type: String, required: true, minLength: 5, maxLength: 50 },
@@ -12,9 +13,9 @@ const userSchema = mongoose.Schema({
     maxLength: 255,
   },
   password: { type: String, required: true, minLength: 8, maxLength: 1024 },
-  isAdmin: { type: Boolean, required: true, default:false},
+  isAdmin: { type: Boolean, required: true },
+  // friendList: {type:[friendSchema], default:[]}
 });
-  
 
 userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
@@ -23,13 +24,13 @@ userSchema.methods.generateAuthToken = function () {
       name: this.name,
       email: this.email,
       isAdmin: this.isAdmin,
-},
+      friendList: this.friendList
+    },
     process.env.JWT_SECRET
   );
 };
-    
-      
- 
+
+const User = mongoose.model("User", userSchema);
 const validateUser = (user) => {
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
@@ -39,7 +40,6 @@ const validateUser = (user) => {
   });
   return schema.validate(user);
 };
-    
 
 const validateLogin = (req) => {
   const schema = Joi.object({
@@ -49,9 +49,8 @@ const validateLogin = (req) => {
   return schema.validate(req);
 };
 
-const User = mongoose.model("User", userSchema);
+
 module.exports.User = User;
 module.exports.userSchema = userSchema;
 module.exports.validateUser = validateUser;
 module.exports.validateLogin = validateLogin;
-

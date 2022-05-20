@@ -1,5 +1,5 @@
 const {Studio, validateStudio, studioSchema} = require("../models/studio");
-const {User, validateUser} = require("../models/customer.js")
+// const {User, validateUser} = require("../models/customer.js")
 // const {main, refreshList} = require("../db/googleAPI")
 // const calendar = getAuth()
 const bcrypt = require("bcrypt");
