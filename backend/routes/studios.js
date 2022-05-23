@@ -7,6 +7,8 @@ const { Schedule } = require("../models/schedule");
 const { AboutArtist } = require("../models/AboutArtist");
 const { redis } = require("googleapis/build/src/apis/redis");
 const router = express.Router()
+const fileUpload = require("../middleware/file-upload");
+const fs = require('fs')
 
 async function main() {
   const auth = new google.auth.GoogleAuth({
@@ -218,6 +220,7 @@ router.get("/getstudio/:studioId", async (req, res) => {
   try{
     console.log(req.params.studioId)
     let studio = await Studio.findById(req.params.studioId)  
+    console.log(studio)
   return res.send(studio)
   
   }catch(er){
@@ -226,13 +229,17 @@ router.get("/getstudio/:studioId", async (req, res) => {
   
   })
 
-
 //Check if brent knows why this isn't saving properly
-router.put("/:studioId/:artistId/addcalendarevent", async (req, res) => {
+router.put("/:studioId/:artistId/addcalendarevent", fileUpload.single("image"),async (req, res) => {
   try{
+
     let studio = await Studio.findById(req.params.studioId)
     let artist = studio.artists.id(req.params.artistId)
-
+    let image = ''
+    try{
+      let image = req.file.path
+    }catch{
+    }
     let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description, req.body.date, req.body.sendUpdates, [req.body.customer.email])
     let eventDate = newEvent.start.date
     let event = new Schedule({
@@ -241,7 +248,8 @@ router.put("/:studioId/:artistId/addcalendarevent", async (req, res) => {
       public:true,
     description:newEvent.description,start:newEvent.start,end:newEvent.end, sendUpdates:req.body.sendUpdates},
     date:eventDate.replace('Z', 'GMT'),
-    customer:req.body.customer
+    customer:req.body.customer,
+    image:image
     })
     console.log(event)
 
