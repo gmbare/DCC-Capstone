@@ -16,7 +16,6 @@ const Studio = (props) => {
         setParlour(res.data)
     }
 
-<<<<<<< HEAD
     const removeEvent = async (artist, event) => {
         console.log(event)
         let res = await axios.delete(`http://localhost:3001/api/studio/${params.studioId}/delcalendarevent/${artist._id}`, {data: {event:event}})
@@ -24,8 +23,6 @@ const Studio = (props) => {
         alert(res.data)
     }
 
-=======
->>>>>>> 00b8178856ef0f42b5d1f37c116a2492ecc435e9
     const { user } = useContext(AuthContext);
     // if (user)console.log(user.name);
     // else{console.log("Not logged in")}
@@ -63,11 +60,7 @@ try{
     return (<div id='nice' >
         {/* <Link to="/" className='top-left-corner'>HOME</Link>
         <Link to="/">HOME</Link> */}
-<<<<<<< HEAD
         {/* <Link type="button" to={`/query/${searchZip}`} state={{ search: parlour.zip_code }} className="back_btn">Back</Link> */}
-=======
-        <Link type="button" to={`/query/${searchZip}`} state={{ search: parlour.zip_code }} className="back_btn">Back</Link>
->>>>>>> 00b8178856ef0f42b5d1f37c116a2492ecc435e9
         <div className='center-text studio_container'>
             <h1>{parlour.name}</h1>
             {parlour.artists.map((artist, index) => {
@@ -91,7 +84,6 @@ try{
                                         dayCount++
                                         return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p>{parlour.artists.map((artist) => {
                                             if (artist.schedule[`week${i}`].includes(filldate.getDay())) {
-<<<<<<< HEAD
                                                 let m = artist.events.find(o => o.date == calendarDate)
                                                 if (m && user) {
                                                     if (m.customer == user.email){
@@ -101,13 +93,6 @@ try{
                                                     return
                                                 }
                                                 return (<Link to={`/${parlour._id}/artist/${artist._id}/schedule`} state={{ date: calendarDate, parlourId: parlour._id, zip_code:searchZip}}><button className='schedule_button'>{`Schedule w/ ${artist.name}`}</button></Link>)
-=======
-                                                if (artist.events.find(o => o.date == calendarDate)) {
-                                                    // console.log(studio)
-                                                    return
-                                                }
-                                                return (<Link to={`/${parlour._id}/artist/${artist._id}/schedule`} state={{ date: calendarDate, parlourId: parlour._id }}><button className='schedule_button'>{`Schedule w/ ${artist.name}`}</button></Link>)
->>>>>>> 00b8178856ef0f42b5d1f37c116a2492ecc435e9
                                             }
                                         })}</td>)
                                     } else if ((i == 1 && j < startOfMonth.getDay()) || (i >= 1 && dayCount >= currentMonth.days)) {
@@ -116,7 +101,6 @@ try{
                                         dayCount++
                                         return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p>{parlour.artists.map((artist) => {
                                             if (artist.schedule[`week${i}`].includes(filldate.getDay())) {
-<<<<<<< HEAD
                                                 let m = artist.events.find(o => o.date == calendarDate)
                                                 if (m && user) {
                                                     if (m.customer == user.email){
@@ -126,12 +110,6 @@ try{
                                                     return
                                                 }
                                                 return (<Link to={`/${parlour._id}/artist/${artist._id}/schedule`} state={{ date: calendarDate, parlourId: parlour._id, zip_code:searchZip}}><button className='schedule_button' >{`Schedule w/ ${artist.name}`}</button></Link>)
-=======
-                                                if (artist.events.find(o => o.date == calendarDate)) {
-                                                    return
-                                                }
-                                                return (<Link to={`/${parlour._id}/artist/${artist._id}/schedule`} state={{ date: calendarDate, parlourId: parlour._id}}><button className='schedule_button' >{`Schedule w/ ${artist.name}`}</button></Link>)
->>>>>>> 00b8178856ef0f42b5d1f37c116a2492ecc435e9
                                             }
                                         })}</td>)
                                     }
@@ -144,10 +122,7 @@ try{
     </div>)
 }
 catch(er){
-<<<<<<< HEAD
     console.log(er)
-=======
->>>>>>> 00b8178856ef0f42b5d1f37c116a2492ecc435e9
     return (<div>Please wait while the page loads</div>)
 }
 }
