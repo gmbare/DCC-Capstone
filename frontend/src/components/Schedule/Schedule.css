@@ -4,6 +4,8 @@
     text-align: center;
     color: white;
     height:fit-content;
+    font-size: xx-large;
+    font-weight: 700;
     border-radius: 2rem;
     margin-top: 20rem;
     margin-left:30%;
@@ -12,3 +14,14 @@
     /* padding: 1rem 1rem; */
     /* max-height: 5rem; */
   }
+
+  .schedule_type{
+      font-size: x-large;
+  }
+
+
+  .schedule_button{
+      font-size:large
+  }
+
+  .hide{display: none;}

@@ -52,6 +52,10 @@
     background:transparent;
     padding:0 .5rem;}
 
+    .aboutme_text{
+        font-size: x-large;
+        font-weight:700;
+    }
 
 .starholder a{color:rgb(255, 255, 255);
     font-size:1.75rem;}

@@ -32,6 +32,8 @@ useEffect(() => {
             <button onClick={() => {logoutUser(returnUrl)}} className="login_register_btn">Logout</button>
             // <button>Logout</button>
           ) : (
+            
+            // <Link type="button" to="/login" state={{pastUrl:returnUrl}} className="login_register_btn"> Login or Register</Link>
             <Link type="button" to="/login" state={{pastUrl:returnUrl}} className="login_register_btn"> Login or Register</Link>
           )}
         {/* </li>

@@ -19,13 +19,22 @@ const ArtistPage = (props) => {
 
     const handleSubmitReview = async (e) => {
         try {
-            console.log(document.getElementById('name_field').value)
-            let res = await axios.put(`http://localhost:3001/api/artist/${params.studioId}/reviewartist/${params.artistId}`, { text:document.getElementById('reviewText').value, rating:stars, raterName: document.getElementById('name_field').value, raterEmail:document.getElementById('email_field').value})
+            let name = document.getElementById('name_field').value
+            let email = document.getElementById('email_field').value
+            if (!document.getElementById('name_field').value){
+                name = "anonymoose"
+            }
+            if(!document.getElementById('email_field').value){
+                email = "anonymouse@mysterious.stranger"
+            }
+            let res = await axios.put(`http://localhost:3001/api/artist/${params.studioId}/reviewartist/${params.artistId}`, { text:document.getElementById('reviewText').value, rating:stars, raterName: name, raterEmail:email})
             console.log(res.data)
         } catch (er) {
             console.log(er)
         }
+        pullArtist()
     }
+
     function colorStars(){
         try{
             for (let i = 1;i < 6; i++){
@@ -56,7 +65,7 @@ const ArtistPage = (props) => {
         return (<div className='aboutpage_container'>
             {/* <Link to="/">HOME</Link><br/><br/> */}
             <h1>Hi!<br />My name is {artist.name}</h1>
-            <h3>About Me: {artist.about.description}</h3>
+            <p className='aboutme_text'>About Me: {artist.about.description}</p>
             Reviews: {artist.about.reviews.map(review => {
                 return (<div className="review_split"><p>{review.rating} stars- {review.text}<br/>{review.raterName}<br/>{review.raterEmail}</p></div>)
             })}<br />
