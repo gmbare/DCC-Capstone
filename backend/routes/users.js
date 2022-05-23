@@ -11,12 +11,11 @@ const router = express.Router();
 router.post("/register", async (req, res) => {
   try {
     const { error } = validateUser(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.send(error.details[0].message);
 
     let user = await User.findOne({ email: req.body.email });
     if (user)
-      return res.status(400).send(`Email ${req.body.email} already claimed!`);
-
+      return res.send(`Email ${req.body.email} already claimed!`);
     const salt = await bcrypt.genSalt(10);
     user = new User({
       name: req.body.name,
@@ -37,6 +36,7 @@ router.post("/register", async (req, res) => {
         isAdmin: user.isAdmin,
       });
   } catch (ex) {
+    console.log(ex)
     return res.status(500).send(`Internal Server Error: ${ex}`);
   }
 });
@@ -45,10 +45,10 @@ router.post("/register", async (req, res) => {
 // when a user logs in, a new JWT token is generated and sent if their email/password credentials are correct
 router.post("/login", async (req, res) => {
   try {
+    console.log(req.body.email)
     const { error } = validateLogin(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
-    let user = await User.findOne({ email: req.body.email });
+    if (error) {console.log(error);return res.status(400).send(error.details[0].message);}
+    let user = await User.findOne({email: {$regex: new RegExp(req.body.email.trim(), "i")}});
     if (!user) return res.status(400).send(`Invalid email or password.`);
 
     const validPassword = await bcrypt.compare(
@@ -85,6 +85,18 @@ router.delete("/:userId", [auth, admin], async (req, res) => {
         .status(400)
         .send(`User with id ${req.params.userId} does not exist!`);
     await user.remove();
+    return res.send(user);
+  } catch (ex) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+  }
+});
+
+router.post("/logout", async (req, res) => {
+  try {
+    let user = await User.findById(req.body._id);
+    if (!user) return res.status(400).send(`Invalid email or password.`);
+    user.online = "Offline"
+    user.save()
     return res.send(user);
   } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);

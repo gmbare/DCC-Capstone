@@ -39,9 +39,11 @@
 
 
 body{
-  background-color: aliceblue;
-  background-image: url("E:/Dcc-Capstone/DCC-Capstone/frontend/public/BareSkins.png");
+  background-color: rgb(4, 4, 24);
   background-repeat: no-repeat;
-  background-position: center;
+  background-size: cover;
+  -webkit-text-stroke: .075em black;
+  background-position-x:0rem;
+  /* background-position: center; */
   background-position-y: top;
 }

@@ -4,35 +4,58 @@ ul {
   list-style-type: none;
 }
 
-li {
-  font-size: 1.25rem;
-}
 
 .navBar {
-  background-image: linear-gradient(rgb(121, 41, 10), rgb(236, 183, 8));
+  background-image: linear-gradient(rgb(58, 58, 58),rgb(58, 58, 58),rgba(37, 37, 37, 0));
   box-shadow: 4px 2px 5px gray;
-  color: white;
+  color: bisque;
   margin-bottom: 1rem;
   padding: 1rem 1rem;
-  max-height: 5rem;
+  max-height: 3rem;
 }
 
-.navBar button {
-  background: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 0.4rem 0.5rem;
+.brand_image{
+  position: relative;
+  float:left;
+  margin-top:-.5rem;
+    height:3rem;
+    max-height:100%
 }
 
-.navBar button:hover {
-  background: white;
+
+.brand_text{
+  float:left;
+  -webkit-text-stroke: .025em black;
+  position: relative;
+  margin-left:1rem;
+  margin-top:-.5rem;
+    height:10rem;
+    font-size: xx-large;
+    max-height:100%
+
+}
+
+.login_register_btn{
+  /* position:relative; */
+  float:right;
+  border-radius: .5rem;
+  background-color: bisque;
+  height:2rem;
+  text-decoration: none;
+  color:black
+}
+
+
+.login_register_btn:hover{
+  background-color: rgb(229, 191, 145);
   color: steelblue;
   cursor: pointer;
 }
 
 .brand {
+  float:left;
   cursor: pointer;
   font-size: 2rem;
 }
 
-.brand img{max-height:80%;}
+.brand_img{max-height:80%;}

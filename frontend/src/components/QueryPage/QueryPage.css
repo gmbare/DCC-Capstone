@@ -1,0 +1,20 @@
+.querypage_container{
+    background-image: linear-gradient(#c59d7a8e, #c59d7a98);
+    box-shadow: 4px 2px 5px #5f4c3b;
+    text-align: center;
+    color: white;
+    height:fit-content;
+    border-radius: 2rem;
+    margin-top: 20rem;
+    margin-left:30%;
+    margin-right:30%;
+    /* margin-bottom: 1rem; */
+    /* padding: 1rem 1rem; */
+    /* max-height: 5rem; */
+  }
+
+  .location_text{
+      font-size:xx-large;
+  }
+
+  

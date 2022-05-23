@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
 import useCustomForm from "../../hooks/useCustomForm";
+import "./RegisterPage.css"
 
 const RegisterPage = () => {
   const { registerUser } = useContext(AuthContext);
@@ -11,10 +12,11 @@ const RegisterPage = () => {
   );
 
   return (
-    <div className="container">
-      <form className="form" onSubmit={handleSubmit}>
+    <div className="container registerpage_container">
+      <form className="form registerpage_container" onSubmit={handleSubmit}>
         <label>
           Name:{" "}
+          <br/>
           <input
             type="text"
             name="name"
@@ -23,7 +25,9 @@ const RegisterPage = () => {
           />
         </label>
         <label>
+          <br/>
           Email:{" "}
+          <br/>
           <input
             type="text"
             name="email"
@@ -32,7 +36,9 @@ const RegisterPage = () => {
           />
         </label>
         <label>
+          <br/>
           Password:{" "}
+        <br/>
           <input
             type="text"
             name="password"
@@ -40,21 +46,7 @@ const RegisterPage = () => {
             onChange={handleInputChange}
           />
         </label>
-        <label
-          style={{
-            display: "flex",
-            alignItems: "center",
-            width: "20%",
-          }}
-        >
-          Admin:{" "}
-          <input
-            type="checkbox"
-            name="isAdmin"
-            checked={formData.isAdmin}
-            onChange={handleInputChange}
-          />
-        </label>
+        <br/>
         <button>Register!</button>
       </form>
     </div>

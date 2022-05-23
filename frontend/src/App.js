@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { Routes, Route} from "react-router-dom";
 import LandingPage from './Pages/LandingPage/LandingPage';
 // import Calendar from './components/Calendar/Calendar';
@@ -16,12 +16,25 @@ import QueryPage from './components/QueryPage/QueryPage';
 
 
 function App() {
+
+
+ function chooseBackground() {
+   let imageInt = parseInt((Math.random() * 4) + 1)
+   console.log(imageInt)
+   document.body.style.backgroundImage = `url(/BackgroundImages/Vintage${imageInt}.png)`;
+  //  [0].style.background.image = (`E:/Dcc-Capstone/DCC-Capstone/frontend/public/BackgroundImages/Vintage2.png`);
+ }
+
+  useEffect(() => {
+    chooseBackground()
+  },[])
+
   return (
     <div className="App">
       <Navbar/>
     <Routes>
       <Route
-        path="/studio/:studio_id"
+        path="/studio/:studioId"
         element={
           // <PrivateRoute>
             <Studio/>
@@ -51,6 +64,7 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
     </Routes>
+    
     </div>
   );
 }

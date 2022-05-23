@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const useCustomForm = (initialValues = {}, onSubmit) => {
   const [formData, setFormValues] = useState(initialValues);
+  const [pastUrl, setPastUrl] = useState()
 
   const handleInputChange = (e) => {
     e.persist();
@@ -12,16 +13,17 @@ const useCustomForm = (initialValues = {}, onSubmit) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e,pastUrl) => {
     e.preventDefault();
-    onSubmit(formData);
+    // console.log(pastUrl)
+    onSubmit(formData, pastUrl);
   };
 
   const reset = () => {
     setFormValues(initialValues);
   };
 
-  return [formData, handleInputChange, handleSubmit, reset];
+  return [formData, handleInputChange, handleSubmit, reset, setPastUrl];
 };
 
 export default useCustomForm;

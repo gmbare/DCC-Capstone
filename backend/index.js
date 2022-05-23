@@ -19,7 +19,7 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 app.use('/api/studio', studioRouter)
 app.use('/api/artist', artistRouter)
-// app.use(`/api/users`, usersRouter);
+app.use(`/api/users`, usersRouter);
 
 
 const port = process.env.PORT || 5000;

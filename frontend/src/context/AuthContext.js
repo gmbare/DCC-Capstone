@@ -8,7 +8,7 @@ const AuthContext = createContext();
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
-  const BASE_URL = "http://localhost:3008/api/users";
+  const BASE_URL = "http://localhost:3001/api/users";
   const decodedUser = localStorage.getItem("token");
   const decodedToken = decodedUser ? jwtDecode(decodedUser) : null;
   const [user, setUser] = useState(() => decodedToken);
@@ -38,14 +38,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginUser = async (loginData) => {
+  const loginUser = async (loginData, navigateUrl) => {
     try {
       let response = await axios.post(`${BASE_URL}/login`, loginData);
       if (response.status === 200) {
         localStorage.setItem("token", JSON.stringify(response.data));
         setUser(jwtDecode(response.data));
         setIsServerError(false);
-        navigate("/");
+        if (navigateUrl) navigate(navigateUrl);
+        else navigate("/")
       } else {
         navigate("/register");
       }
@@ -55,13 +56,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logoutUser = async () => {
+  const logoutUser = async (navigateUrl) => {
     if (user) {
       console.log(user)
       let response = await axios.post(`${BASE_URL}/logout`, user);
       localStorage.removeItem("token");
       setUser(null);
-      navigate("/");
+      if (navigateUrl) navigate(navigateUrl);
+      else navigate("/")
     }
   };
 

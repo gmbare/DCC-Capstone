@@ -7,7 +7,7 @@ const express = require('express');
 const { validateArtist, Artist } = require("../models/artist");
 const { google } = require("googleapis");
 const { Schedule } = require("../models/schedule");
-const { Review } = require("../models/review");
+const { Review, validateReview } = require("../models/review");
 const router = express.Router()
 
 
@@ -25,9 +25,16 @@ router.get("/:studioId/findartist/:artistId", async (req,res) => {
 
 router.put("/:studioId/reviewartist/:artistId", async(req, res) => {
     try{
+        let {err} = validateReview(req.body)
+        if (err) return res.send("Please check your inputs and try again")
         let studio = await Studio.findById(req.params.studioId)
-        let artist = stuido.artists.id(req.params.artistId)
-        let review = new Review({text:req.body.text, rating:req.body.rating,rater:{name:req.body.raterName, email:req.body.raterEmail}})
+        let artist = studio.artists.id(req.params.artistId)
+        // let artist = studio.artists.id(req.params.artistId)
+        let review = new Review({text:req.body.text, rating:req.body.rating,raterName:req.body.raterName, raterEmail:req.body.raterEmail})
+        artist.about.reviews.push(review)
+        console.log(studio)
+        await studio.save()
+        return res.send(artist)
     }catch(er){
 
     }

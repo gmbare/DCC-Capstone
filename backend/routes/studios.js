@@ -1,11 +1,11 @@
 const {Studio, validateStudio, studioSchema} = require("../models/studio");
-// const {User, validateUser} = require("../models/customer.js")
 const bcrypt = require("bcrypt");
 const express = require('express');
 const { validateArtist, Artist } = require("../models/artist");
 const { google } = require("googleapis");
 const { Schedule } = require("../models/schedule");
 const { AboutArtist } = require("../models/AboutArtist");
+const { redis } = require("googleapis/build/src/apis/redis");
 const router = express.Router()
 
 async function main() {
@@ -44,10 +44,12 @@ async function removeCalendar(calendar_id){
 }
 
 
-async function addEvent(calendar_id, summary='basic summary', description='basic description', date='2022-04-20'){
+async function addEvent(calendar_id, summary='basic summary', description='basic description', date='2022-04-20', sendUpdates='none', attendees=[]){
   let res = await calendar.events.insert({
     calendarId:calendar_id,
+    sendUpdates:sendUpdates,
     requestBody:{
+    attendees:attendees,
     summary:summary,
     description:description,     
     start: {
@@ -55,7 +57,7 @@ async function addEvent(calendar_id, summary='basic summary', description='basic
     },
     end: {
       'date': date
-    }, timeZone:"America/Chicago"
+    }
   }
 })
   console.log("Successfully added event to calendar")
@@ -158,6 +160,8 @@ try{
 //   }
 // });
 
+
+
 router.put("/registernewartist/:studioId", async(req, res) => {
     try{
         // const {error} = validateArtist(req.body);
@@ -212,6 +216,7 @@ router.delete("/removeartist/:studioId/:artist_id", async (req, res) => {
 
 router.get("/getstudio/:studioId", async (req, res) => {
   try{
+    console.log(req.params.studioId)
     let studio = await Studio.findById(req.params.studioId)  
   return res.send(studio)
   
@@ -228,14 +233,15 @@ router.put("/:studioId/:artistId/addcalendarevent", async (req, res) => {
     let studio = await Studio.findById(req.params.studioId)
     let artist = studio.artists.id(req.params.artistId)
 
-    let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description, req.body.date)
+    let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description, req.body.date, req.body.sendUpdates, [req.body.customer.email])
     let eventDate = newEvent.start.date
     let event = new Schedule({
       items: {event_id:newEvent.id,
       summary:newEvent.summary,
       public:true,
-    description:newEvent.description,start:newEvent.start,end:newEvent.end},
-    date:eventDate.replace('Z', 'GMT')
+    description:newEvent.description,start:newEvent.start,end:newEvent.end, sendUpdates:req.body.sendUpdates},
+    date:eventDate.replace('Z', 'GMT'),
+    customer:req.body.customer
     })
     console.log(event)
 

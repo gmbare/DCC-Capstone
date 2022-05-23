@@ -3,13 +3,68 @@
 }
 
 .center-table{
-    display:inline-block
+    display:inline-block;
+    color:black;
 }
 
 .calendar-table{
     border: .1rem solid;
     border-collapse: collapse;
-    background-color: aliceblue;
+    background-color: bisque;
+}
+
+.studio_container{
+    background-image: linear-gradient(#c59d7a8e, #c59d7a98);
+    box-shadow: 4px 2px 5px #5f4c3b;
+    text-align: center;
+    color: white;
+    height:fit-content;
+    border-radius: 2rem;
+    margin-top: 5rem;
+    margin-left:20%;
+    margin-right:30%;
+    width: 90rem;
+    /* margin-bottom: 1rem; */
+    /* padding: 1rem 1rem; */
+    /* max-height: 5rem; */
+  }
+
+  .back_btn{
+      float:left;
+      font-size: xx-large;
+      text-decoration: none;
+      border:solid black;
+      color: black;
+      background-color: bisque;
+      border-radius: .5rem;
+      width:8rem;
+  }
+
+  .back_btn:hover{
+    background-color: rgb(229, 191, 145);
+  }
+
+  .artist_cell:hover{
+    background-color: rgb(229, 191, 145);
+  }
+
+
+.artist_cell{
+    border:inset black;
+    float:center;
+    border-radius: .5rem;
+    background-color: bisque;
+    height:10rem;
+    width:10rem;
+    font-size:xx-large;
+    text-decoration: none;
+    color:black;
+    -webkit-text-stroke: .075rem black;
+
+}
+
+.calendar_month{
+    font-size:xx-large
 }
 
 .calendar_weekday_cell{
@@ -42,5 +97,7 @@
 
 .schedule_button{
     position: relative;
-    z-index:1
+}
+.schedule_button:hover{
+    background-color: rgb(229, 191, 145);
 }
