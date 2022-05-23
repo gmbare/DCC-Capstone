@@ -3,16 +3,18 @@ const Joi = require("joi");
 
 const scheduleSchema = new mongoose.Schema({
     items: {type:Object},
-    taken: {type:Boolean, default:false},
-    customer: {type:String}
+    date: {type:String},
+    customer: {type:Object},
+    image:{ type: String, default: "" },
 })    
 const Schedule = mongoose.model("Schedule", scheduleSchema);
 
 function validateSchedule(artist){
 const schema = Joi.object({
     items: Joi.object(),
-    taken: Joi.boolean(),
-    customer: Joi.string()
+    date: Joi.string(),
+    customer: Joi.object(),
+    image: Joi.string(),
 })
 return schema.validate(artist);
 }

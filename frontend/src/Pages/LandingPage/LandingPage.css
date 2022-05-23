@@ -1,17 +1,28 @@
 .search_query_div{
 position:relative;
 display: inline-block;
-margin-top: 20rem;
-}
-
-.landingpage_container{
-    text-align: center;
 }
 
 .font-size-5r{
     display: inline-block;
     /* font-size:3rem; */
 }
+
+.landingpage_container{
+    background-image: linear-gradient(#c59d7a8e, #c59d7a98);
+    box-shadow: 4px 2px 5px #5f4c3b;
+    text-align: center;
+    color: bisque;
+    height:12rem;
+    border-radius: 2rem;
+    margin-top: 20rem;
+    margin-left:30%;
+    margin-right:30%;
+    /* margin-bottom: 1rem; */
+    /* padding: 1rem 1rem; */
+    /* max-height: 5rem; */
+  }
+  
 
 .box-size-5r{
     display: inline-block;
@@ -37,7 +48,8 @@ margin-top: 20rem;
 
 
 .login_register_div{
+    text-align: center;
     position:fixed;
-    bottom:1rem;
+    bottom:2rem;
     display: inline-block;
 }

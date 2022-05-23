@@ -1,0 +1,61 @@
+ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+
+.navBar {
+  background-image: linear-gradient(rgb(58, 58, 58),rgb(58, 58, 58),rgba(37, 37, 37, 0));
+  box-shadow: 4px 2px 5px gray;
+  color: bisque;
+  margin-bottom: 1rem;
+  padding: 1rem 1rem;
+  max-height: 3rem;
+}
+
+.brand_image{
+  position: relative;
+  float:left;
+  margin-top:-.5rem;
+    height:3rem;
+    max-height:100%
+}
+
+
+.brand_text{
+  float:left;
+  -webkit-text-stroke: .025em black;
+  position: relative;
+  margin-left:1rem;
+  margin-top:-.5rem;
+    height:10rem;
+    font-size: xx-large;
+    max-height:100%
+
+}
+
+.login_register_btn{
+  /* position:relative; */
+  float:right;
+  border-radius: .5rem;
+  background-color: bisque;
+  height:2rem;
+  text-decoration: none;
+  color:black
+}
+
+
+.login_register_btn:hover{
+  background-color: rgb(229, 191, 145);
+  color: steelblue;
+  cursor: pointer;
+}
+
+.brand {
+  float:left;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.brand_img{max-height:80%;}

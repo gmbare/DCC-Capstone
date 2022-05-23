@@ -1,0 +1,40 @@
+.schedule_container{
+    background-image: linear-gradient(#c59d7a8e, #c59d7a98);
+    box-shadow: 4px 2px 5px #5f4c3b;
+    text-align: center;
+    color: white;
+    height:fit-content;
+    font-size: xx-large;
+    font-weight: 700;
+    border-radius: 2rem;
+    margin-top: 20rem;
+    margin-left:30%;
+    margin-right:30%;
+    /* margin-bottom: 1rem; */
+    /* padding: 1rem 1rem; */
+    /* max-height: 5rem; */
+  }
+
+  .schedule_type{
+      font-size: x-large;
+  }
+
+  .login_schedule_btn{
+      border-radius: .5rem;
+      border:solid black;
+      background-color: bisque;
+      text-decoration: none;
+      color:white;
+      -webkit-text-stroke: .05rem black;
+  }
+
+  .login_schedule_btn:hover{
+      background-color: rgb(229, 191, 145);
+      cursor:pointer
+  }
+
+  .schedule_button{
+      font-size:large
+  }
+
+  .hide{display: none;}

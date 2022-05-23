@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa"
 import { MdLocationSearching } from "react-icons/md"
 import axios from 'axios'
 import getCurrentPosition from "../../utils/GeoLocator"
+import "./QueryPage.css"
 
 var parseString = require('xml2js').parseString;
 
@@ -28,7 +29,6 @@ const QueryPage = (props) => {
                         }
                         else if (parseInt(result.geonames.totalResultsCount) === 0) {
                             document.getElementById('return').textContent = `No Parlours found for ZipCode of: ${text}`
-                            
                             setParlours([])
                         }
                     })
@@ -65,18 +65,13 @@ const QueryPage = (props) => {
         () => {handleSubmission()
         }, [])
 
-    return (<div className='querypage_div'>
-        <div><Link to="/">Home</Link></div>
+    return (<div className='querypage_container'>
+        {/* <div><Link to="/">Home</Link></div> */}
         <div className='search_query_div'>
-            <p id="return"></p>
+            <h2 id="return" className='location_text'></h2>
             <button className='btn-size-5r' onClick={e => handleLocation(e)}><MdLocationSearching className='font-size-5r' /></button> <input type='text' id='zip_code_query' placeholder={`Please input a Zip Code`} className='box-size-5r' onKeyDown={(e) => handleInput(e)}></input><button className='btn-size-5r' onClick={handleSubmission}><FaSearch className='font-size-5r' /></button>
         </div>
-        <div>
             <QueryPageBottom parlours={parlours} searchZip={params.zip_code} />
-        </div>
-        <div className='login_register_div'>
-            <p>Insert Anchors that allow you to login, or take you to register page</p>
-        </div>
     </div>)
 }
 

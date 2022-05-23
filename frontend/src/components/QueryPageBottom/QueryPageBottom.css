@@ -11,9 +11,24 @@
     border-style: groove;
 }
 
+/* .bottom_query_div{
+     position:absolute;
+    float:left 
+ } */
+
+.zip_code{
+    font-size: xx-large;}
+
 .upper_parlour_button{
-    border: none;
-    background-color: inherit;
-    height: 3rem;
-    width: 100%;
+    border:solid black;
+    font-size: x-large;
+    background-color: bisque;
+    width:100%;
+}
+.upper_parlour_button:hover{
+    border:solid black;
+    font-size: x-large;
+    cursor: pointer;
+    background-color: rgb(229, 191, 145);
+    width:100%;
 }

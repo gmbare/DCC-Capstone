@@ -1,13 +1,14 @@
 const {Studio, validateStudio, studioSchema} = require("../models/studio");
-const {User, validateUser} = require("../models/customer.js")
-// const {main, refreshList} = require("../db/googleAPI")
-// const calendar = getAuth()
 const bcrypt = require("bcrypt");
 const express = require('express');
 const { validateArtist, Artist } = require("../models/artist");
 const { google } = require("googleapis");
 const { Schedule } = require("../models/schedule");
+const { AboutArtist } = require("../models/AboutArtist");
+const { redis } = require("googleapis/build/src/apis/redis");
 const router = express.Router()
+const fileUpload = require("../middleware/file-upload");
+const fs = require('fs')
 
 async function main() {
   const auth = new google.auth.GoogleAuth({
@@ -45,17 +46,19 @@ async function removeCalendar(calendar_id){
 }
 
 
-async function addEvent(calendar_id, summary='basic summary', description='basic description'){
+async function addEvent(calendar_id, summary='basic summary', description='basic description', date='2022-04-20', sendUpdates='none', attendees=[]){
   let res = await calendar.events.insert({
     calendarId:calendar_id,
+    sendUpdates:sendUpdates,
     requestBody:{
+    attendees:attendees,
     summary:summary,
     description:description,     
     start: {
-      'date': '2022-05-20'
+      'date': date
     },
     end: {
-      'date': '2022-05-20'
+      'date': date
     }
   }
 })
@@ -69,7 +72,9 @@ async function listEvents(calendar_id){
 }
 
 async function removeEvents(calendar_id,event_id){
+  console.log(event_id)
   const res = await calendar.events.delete({calendarId:calendar_id, eventId:event_id})
+  return res.data
 }
 
 async function addCalendar(summ = "My_Summary", description = "my_description") {
@@ -78,6 +83,7 @@ async function addCalendar(summ = "My_Summary", description = "my_description") 
     requestBody: {
       "summary": summ,
       "description": description,
+      "timeZone":"America/Chicago"
     },
   });
   return (res.data)
@@ -123,51 +129,56 @@ try{
 })
 
 
-router.post("/registernewcustomer",
-// fileUpload.single("image"),
-async (req, res) => {
-  try {
-    const { error } = validateUser(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+// router.post("/registernewcustomer",
+// // fileUpload.single("image"),
+// async (req, res) => {
+//   try {
+//     const { error } = validateUser(req.body);
+//     if (error) return res.status(400).send(error.details[0].message);
 
-    let user = await User.findOne({ email: req.body.email });
-    if (user)
-      return res.status(400).send(`Email ${req.body.email} already claimed!`);
+//     let user = await User.findOne({ email: req.body.email });
+//     if (user)
+//       return res.status(400).send(`Email ${req.body.email} already claimed!`);
 
-    const salt = await bcrypt.genSalt(10);
-    user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: await bcrypt.hash(req.body.password, salt),
-      isAdmin: req.body.isAdmin
-    });
+//     const salt = await bcrypt.genSalt(10);
+//     user = new User({
+//       name: req.body.name,
+//       email: req.body.email,
+//       password: await bcrypt.hash(req.body.password, salt),
+//       isAdmin: req.body.isAdmin
+//     });
 
-    await user.save();
-    const token = user.generateAuthToken();
-    return res
-      .header("x-auth-token", token)
-      .header("access-control-expose-headers", "x-auth-token")
-      .send({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-      });
-  } catch (ex) {
-    return res.status(500).send(`Internal Server Error: ${ex}`);
-  }
-});
+//     await user.save();
+//     const token = user.generateAuthToken();
+//     return res
+//       .header("x-auth-token", token)
+//       .header("access-control-expose-headers", "x-auth-token")
+//       .send({
+//         _id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         isAdmin: user.isAdmin,
+//       });
+//   } catch (ex) {
+//     return res.status(500).send(`Internal Server Error: ${ex}`);
+//   }
+// });
+
+
 
 router.put("/registernewartist/:studioId", async(req, res) => {
     try{
-        const {error} = validateArtist(req.body);
-        if (error) return res.send(`${req.body}\n\n${error}`)
+        // const {error} = validateArtist(req.body);
+        // if (error) return res.send(`${req.body}\n\n${error}`)
         let studio = await Studio.findById(req.params.studioId)
         let calendar = await addCalendar(`${req.params.studioId}&${req.body.name}`, `Calendar for ${req.body.name} of ${studio.name}`)
+        let about = new AboutArtist({description:req.body.description,
+        reviews:req.body.reviews})
         let artist = new Artist({
             name: req.body.name,
             calendar: calendar,
-            schedule:{week1:[1,2,3,5], week2:[1,2,3,4,5],week3:[1,5],week4:[1,2,3,4,5],week5:[1,2,3,4,5],week6:[1,2,3,4,5]}
+            schedule:{week1:[1,2,3,5], week2:[1,2,3,4,5],week3:[1,5],week4:[1,2,3,4,5],week5:[1,2,3,4,5],week6:[1,2,3,4,5]},
+            about:about
         })
         studio.artists.push(artist)
         await studio.save()
@@ -207,30 +218,46 @@ router.delete("/removeartist/:studioId/:artist_id", async (req, res) => {
 })
 
 
-//Check if brent knows why this isn't saving properly
-router.put("/:studioId/:artistId/addcalendarevent", async (req, res) => {
+router.get("/getstudio/:studioId", async (req, res) => {
   try{
+    console.log(req.params.studioId)
+    let studio = await Studio.findById(req.params.studioId)  
+    console.log(studio)
+  return res.send(studio)
+  
+  }catch(er){
+    console.log(er)
+  }
+  
+  })
+
+//Check if brent knows why this isn't saving properly
+router.put("/:studioId/:artistId/addcalendarevent", fileUpload.single("image"),async (req, res) => {
+  try{
+    console.log(req.body)
+
     let studio = await Studio.findById(req.params.studioId)
     let artist = studio.artists.id(req.params.artistId)
-
-    let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description)
+    let image = ''
+    try{
+      let image = req.file.path
+    }catch{
+    }
+    let newEvent = await addEvent(artist.calendar.id, req.body.summary, req.body.description, req.body.date, req.body.sendUpdates, [req.body.customer])
+    let eventDate = newEvent.start.date
     let event = new Schedule({
       items: {event_id:newEvent.id,
       summary:newEvent.summary,
       public:true,
-    description:newEvent.description,start:newEvent.start,end:newEvent.end}
+    description:newEvent.description,start:newEvent.start,end:newEvent.end, sendUpdates:req.body.sendUpdates},
+    date:eventDate.replace('Z', 'GMT'),
+    customer:req.body.customer,
+    image:image
     })
-  //   let event = {}
-  //   event[newEvent.id] = {event_id:newEvent.id,
-  //   summary:newEvent.summary,
-  // description:newEvent.description,
-  // start:newEvent.start,
-  // end:newEvent.end}
+    console.log(event)
 
-    artist.schedule.push(event)
-    // artist.save()
+    artist.events.push(event)
     await studio.save()
-    // console.log(await listEvents(artist.calendar.id))
     return res.send(studio)
 
   }catch(er){
@@ -243,9 +270,6 @@ router.get("/:studioId/:artistId/getcalendarevent", async (req, res) => {
   try{
   let studio = await Studio.findById(req.params.studioId)
   let artist = studio.artists.id(req.params.artistId)
-
-  // let get = await listEvents(artist.calender.id, req.body.event_id)
-  // console.log(artist.schedule.id[req.body.event_id])
   console.log(artist.schedule)
   let test = artist.schedule[req.body.event_id]
   // console.log(test)
@@ -259,13 +283,32 @@ return res.send(test)
 })
 
 
-router.delete("/:studioId/:artistId/delcalendarevent", async (req, res) => {
+router.delete("/:studioId/delcalendarevent/:artistId/", async (req, res) => {
 try{
+  // console.log(req.body.event)
   let studio = await Studio.findById(req.params.studioId)
   let artist = studio.artists.id(req.params.artistId)
-  let dum = await checkCalendarACL(artist.calendar.id)
-  console.log(dum)
-  return res.send(dum)
+  try{
+    let dum = await removeEvents(artist.calendar.id, req.body.event.event_id)
+  }
+  catch(er){
+    console.log("")
+
+  }
+  // console.log(dum)
+  let m = artist.events.map(event => {
+    if (event.items.event_id == req.body.event.event_id){
+      return ('delete')
+    }
+    return (event)
+  })
+  while (m.includes('delete')){
+    m.splice(m.indexOf('delete',1))
+  }
+  artist.events = m
+  await studio.save()
+  return res.send('Successfully Removed the calendar Event')
+  // return res.send(dum)
   // let remEvent = await delEvent(artist.calender.id, req.body.event_id)
   // artist.schedule.splice(artist.schedule.indexOf(artist.schedule))
 

@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+
+body{
+  background-color: rgb(4, 4, 24);
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-text-stroke: .075em black;
+  background-position-x:0rem;
+  /* background-position: center; */
+  background-position-y: top;
+}
