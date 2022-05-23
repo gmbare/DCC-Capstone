@@ -85,12 +85,13 @@ try{
                                         return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p>{parlour.artists.map((artist) => {
                                             if (artist.schedule[`week${i}`].includes(filldate.getDay())) {
                                                 let m = artist.events.find(o => o.date == calendarDate)
-                                                if (m && user) {
-                                                    if (m.customer == user.email){
-                                                        return (<button className='schedule_button' onClick={() => {removeEvent(artist, m.items)}}>{`Unschedule w/ ${artist.name}`}</button>)
-                                                        console.log("Success")
+                                                if (m) {
+                                                    if (user){
+                                                        if (m.customer == user.email){
+                                                            return (<button className='schedule_button' onClick={() => {removeEvent(artist, m.items)}}>{`Unschedule w/ ${artist.name}`}</button>)
+                                                        }
                                                     }
-                                                    return
+                                                        return
                                                 }
                                                 return (<Link to={`/${parlour._id}/artist/${artist._id}/schedule`} state={{ date: calendarDate, parlourId: parlour._id, zip_code:searchZip}}><button className='schedule_button'>{`Schedule w/ ${artist.name}`}</button></Link>)
                                             }
@@ -102,12 +103,13 @@ try{
                                         return (<td className='calendar-table calendar_day_cell'><p className='top-left'>{dayCount}</p>{parlour.artists.map((artist) => {
                                             if (artist.schedule[`week${i}`].includes(filldate.getDay())) {
                                                 let m = artist.events.find(o => o.date == calendarDate)
-                                                if (m && user) {
-                                                    if (m.customer == user.email){
-                                                        return (<button className='schedule_button' onClick={() => {removeEvent(artist, m.items)}}>{`Unschedule w/ ${artist.name}`}</button>)
-                                                        console.log("Success")
+                                                if (m){
+                                                    if (user){
+                                                        if (m.customer == user.email){
+                                                            return (<button className='schedule_button' onClick={() => {removeEvent(artist, m.items)}}>{`Unschedule w/ ${artist.name}`}</button>)
+                                                        }
                                                     }
-                                                    return
+                                                        return
                                                 }
                                                 return (<Link to={`/${parlour._id}/artist/${artist._id}/schedule`} state={{ date: calendarDate, parlourId: parlour._id, zip_code:searchZip}}><button className='schedule_button' >{`Schedule w/ ${artist.name}`}</button></Link>)
                                             }
